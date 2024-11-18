@@ -14,4 +14,16 @@ export class ClassDiagramService {
     public getAnimationDuration(): number {
         return this.entity.getAnimationDuration();
     }
+
+    public getTimingFunction(): string {
+        return this.entity.getTimingFunction();
+    }
+
+    public getMaxCollapsedHeight(): string {
+        return this.entity.getMaxCollapsedHeight();
+    }
+
+    public getMaxExpandedHeight(): string {
+        return this.entity.getMaxExpandedHeight();
+    }
 } 

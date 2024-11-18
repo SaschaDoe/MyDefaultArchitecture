@@ -1,28 +1,32 @@
 <template>
-  <div class="class-diagram" @click="handleClick">
+  <div class="class-diagram" @click="handleClick" :style="mainStyle">
     <div class="class-title visibility">{{ title }}</div>
-    <div class="class-members">
+    <div class="class-members" :style="membersStyle">
       <!-- Fields -->
-      <div class="fields-section">
-        <div v-for="(field, index) in privateFields" 
-             :key="'priv-field-' + index" 
-             class="member private"
-             :class="{ 'private-hidden': !isPrivateVisible }"
-             :style="privateFieldStyle">
-          <span class="visibility">-</span> {{ field }}
+      <div class="fields-section" :style="sectionStyle">
+        <div class="private-members-container" ref="privateFieldsContainer" :style="containerStyle">
+          <div v-for="(field, index) in privateFields" 
+               :key="'priv-field-' + index" 
+               class="member private"
+               :class="{ 'private-hidden': !isPrivateVisible }"
+               :style="privateFieldStyle">
+            <span class="visibility">-</span> {{ field }}
+          </div>
         </div>
         <div v-for="(field, index) in publicFields" :key="'pub-field-' + index" class="member public">
           <span class="visibility">+</span> {{ field }}
         </div>
       </div>
       <!-- Methods -->
-      <div class="methods-section">
-        <div v-for="(method, index) in privateMethods" 
-             :key="'priv-method-' + index" 
-             class="member private"
-             :class="{ 'private-hidden': !isPrivateVisible }"
-             :style="privateFieldStyle">
-          <span class="visibility">-</span> {{ method }}()
+      <div class="methods-section" :style="sectionStyle">
+        <div class="private-members-container" ref="privateMethodsContainer" :style="containerStyle">
+          <div v-for="(method, index) in privateMethods" 
+               :key="'priv-method-' + index" 
+               class="member private"
+               :class="{ 'private-hidden': !isPrivateVisible }"
+               :style="privateFieldStyle">
+            <span class="visibility">-</span> {{ method }}()
+          </div>
         </div>
         <div v-for="(method, index) in publicMethods" :key="'pub-method-' + index" class="member public">
           <span class="visibility">+</span> {{ method }}()
@@ -62,14 +66,41 @@ export default {
   data() {
     return {
       isPrivateVisible: false,
-      diagramService: new ClassDiagramService()
+      diagramService: new ClassDiagramService(),
+      privateFieldsHeight: '0',
+      privateMethodsHeight: '0'
     }
   },
   computed: {
+    transitionStyle() {
+      return `all ${this.diagramService.getAnimationDuration()}ms ${this.diagramService.getTimingFunction()}`
+    },
+    mainStyle() {
+      return {
+        transition: this.transitionStyle
+      }
+    },
+    membersStyle() {
+      return {
+        transition: this.transitionStyle
+      }
+    },
+    sectionStyle() {
+      return {
+        transition: this.transitionStyle
+      }
+    },
     privateFieldStyle() {
       return {
-        transition: `opacity ${this.diagramService.getAnimationDuration()}ms ease-in-out`,
+        transition: this.transitionStyle,
         opacity: this.isPrivateVisible ? 1 : 0
+      }
+    },
+    containerStyle() {
+      return {
+        transition: `max-height ${this.diagramService.getAnimationDuration()}ms ${this.diagramService.getTimingFunction()}`,
+        maxHeight: this.isPrivateVisible ? this.diagramService.getMaxExpandedHeight() : this.diagramService.getMaxCollapsedHeight(),
+        overflow: 'hidden'
       }
     }
   },
@@ -129,5 +160,10 @@ export default {
 
 .private-hidden {
   pointer-events: none;
+}
+
+.private-members-container {
+  max-height: 0;
+  overflow: hidden;
 }
 </style>
