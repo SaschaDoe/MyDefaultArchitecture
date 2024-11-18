@@ -52,12 +52,24 @@ The last comment block of each slide will be treated as slide notes. It will be 
 transition: fade-out
 ---
 Hey
+<!--
 <ClassDiagram
   title="Person"
   :private-fields="['age: number', 'name: string']"
   :public-fields="['id: string']"
   :private-methods="['calculateAge']"
   :public-methods="['getName', 'setName']"
+/>
+-->
+
+<BarChart
+ :width="300"
+  :height="300"
+  orientation="vertical"
+  :sections="[
+    { label: 'More', percentage: 70, color: '#00b894' },
+    { label: 'Less', percentage: 30, color: '#d63031' }
+  ]"
 />
 
 ---
