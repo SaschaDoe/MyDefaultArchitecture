@@ -62,6 +62,7 @@ Hey
 />
 -->
 
+<!--
 <BarChart
  :width="300"
   :height="300"
@@ -71,6 +72,43 @@ Hey
     { label: 'Less', percentage: 30, color: '#d63031' }
   ]"
 />
+-->
+
+# Animation Demo
+
+<div class="w-full">
+<AnimatedBarChart
+:animation-states="[
+  {
+    state: [
+      { label: 'A', percentage: 70, color: '#00b894' },
+      { label: 'B', percentage: 30, color: '#d63031' }
+    ],
+    duration: 600
+  },
+  {
+    state: [
+      { label: 'A', percentage: 30, color: '#00b894' },
+      { label: 'B', percentage: 70, color: '#d63031' }
+    ],
+    duration: 600
+  },
+  {
+    state: [
+      { label: 'A', percentage: 50, color: '#00b894' },
+      { label: 'B', percentage: 50, color: '#d63031' }
+    ],
+    duration: 600
+  }
+]"
+orientation="vertical"
+:width="300"
+:height="300"
+:bar-size="50"
+/>
+</div>
+
+Click the chart to animate!
 
 ---
 transition: fade-out

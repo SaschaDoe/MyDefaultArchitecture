@@ -10,8 +10,14 @@
             :class="{ 'vertical': isVertical }"
             :style="getSectionStyle(section)"
           >
-            <div class="bar-label" :class="{ 'vertical': isVertical, 'hidden': !isLabelFitting(section) }">
-              {{ section.label }}: {{ section.percentage }}%
+            <div 
+              class="bar-label" 
+              :class="{ 
+                'vertical': isVertical, 
+                'hidden': !isLabelFitting(displaySections[index])
+              }"
+            >
+              {{ displaySections[index].label }}: {{ Math.round(displaySections[index].percentage) }}%
             </div>
           </div>
         </div>
@@ -19,12 +25,14 @@
     </div>
     <div class="legend">
       <div 
-        v-for="(section, index) in sections" 
+        v-for="(section, index) in displaySections" 
         :key="'legend-' + index"
         class="legend-item"
       >
         <div class="legend-color" :style="{ backgroundColor: section.color }"></div>
-        <span>{{ section.label }}: {{ section.percentage }}%</span>
+        <span>
+          {{ section.label }}: {{ Math.round(section.percentage) }}%
+        </span>
       </div>
     </div>
   </div>
@@ -44,6 +52,10 @@ export default {
         return Math.abs(totalPercentage - 100) < 0.01;
       }
     },
+    displaySections: {
+      type: Array,
+      required: true
+    },
     orientation: {
       type: String,
       default: 'horizontal',
@@ -60,6 +72,10 @@ export default {
     barSize: {
       type: Number,
       default: 40
+    },
+    isAnimating: {
+      type: Boolean,
+      default: false
     }
   },
 
@@ -180,11 +196,12 @@ export default {
   color: white;
   font-weight: bold;
   text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
-  overflow: visible;
+  overflow: hidden;
 }
 
 .bar-section.vertical {
   width: 100%;
+  justify-content: center;
 }
 
 .bar-label {
@@ -192,14 +209,19 @@ export default {
   padding: 0 8px;
   text-align: center;
   font-size: 0.9em;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.bar-label.animating {
+  opacity: 0;
 }
 
 .bar-label.vertical {
   transform: rotate(180deg);
-  position: absolute;
-  left: 50%;
-  transform-origin: center;
+  position: relative;
   width: max-content;
+  transform-origin: center;
 }
 
 .bar-label.hidden {
@@ -223,5 +245,14 @@ export default {
   width: 16px;
   height: 16px;
   border-radius: 4px;
+}
+
+.legend-item span {
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.legend-item span.animating {
+  opacity: 0;
 }
 </style> 

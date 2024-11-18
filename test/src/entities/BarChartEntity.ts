@@ -8,7 +8,7 @@ export type Orientation = 'horizontal' | 'vertical';
 
 export class BarChartEntity {
     private _sections: BarSection[] = [];
-    private _animationDuration: number = 750;
+    private _animationDuration: number = 400;
     private _timingFunction: string = 'cubic-bezier(0.4, 0, 0.2, 1)';
     private _orientation: Orientation = 'horizontal';
     private _barHeight: number = 40;
