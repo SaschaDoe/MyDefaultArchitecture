@@ -49,7 +49,7 @@ export default {
       required: true,
       validator: (sections) => {
         const totalPercentage = sections.reduce((sum, section) => sum + section.percentage, 0);
-        return Math.abs(totalPercentage - 100) < 0.01;
+        return Math.abs(totalPercentage - 100) < 1;
       }
     },
     displaySections: {

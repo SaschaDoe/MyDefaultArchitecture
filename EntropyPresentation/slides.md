@@ -3,7 +3,7 @@
 theme: seriph
 # random image from a curated Unsplash collection by Anthony
 # like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
+background: 
 # some information about your slides (markdown enabled)
 title: Welcome to Slidev
 info: |
@@ -18,47 +18,77 @@ drawings:
   persist: false
 # slide transition: https://sli.dev/guide/animations.html#slide-transitions
 transition: slide-left
-# enable MDC Syntax: https://sli.dev/feature/mdc
+# enable MDC Syntax: https://sli.dev/features/mdc
 mdc: true
 # take snapshot for each slide in the overview
 overviewSnapshots: true
 ---
+<div class="text-left">
+<h1 class="text-3xl">Architecture Entropy</h1>
 
-# Welcome to Slidev
-
-Presentation slides for developers
+ 
+by Sascha Dörflein
+</div>
 
 <div class="pt-12">
-  <span @click="$slidev.nav.next" class="px-2 py-1 rounded cursor-pointer" hover="bg-white bg-opacity-10">
-    Press Space for next page <carbon:arrow-right class="inline"/>
+  <span 
+    @click="$slidev.nav.next" 
+    class="wobble-text px-2 py-1 rounded cursor-pointer" 
+    hover="bg-white bg-opacity-10"
+  >
+    How never be frustrated at coding again <carbon:arrow-right class="inline"/>
   </span>
 </div>
+
+<style>
+@keyframes wobble {
+  0% { transform: translate(0, 0) rotate(0deg); }
+  25% { transform: translate(-2px, 0) rotate(-2deg); }
+  50% { transform: translate(2px, 0) rotate(2deg); }
+  75% { transform: translate(-1px, 0) rotate(-1deg); }
+  100% { transform: translate(0, 0) rotate(0deg); }
+}
+
+.wobble-text {
+  display: inline-block;
+  animation: wobble 2s ease-in-out;
+  /* Make it run every 5 seconds */
+  animation-iteration-count: infinite;
+  animation-delay: 5s;
+}
+
+/* Optional: also wobble on hover */
+.wobble-text:hover {
+  animation: wobble 0.5s ease-in-out;
+  animation-iteration-count: 1;
+  animation-delay: 0s;
+}
+</style>
+
 
 <div class="abs-br m-6 flex gap-2">
   <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
     <carbon:edit />
   </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" alt="GitHub" title="Open in GitHub"
+
+
+  <a href="https://leanpub.com/architectureentropy" target="_blank" alt="GitHub" title="Open in GitHub"
     class="text-xl slidev-icon-btn opacity-50 !border-none !hover:text-white">
-    <carbon-logo-github />
+    <mdi-account-circle />
   </a>
+</div>
+
+---
+transition: fade-out
+---
+
+<div class="text-left">
+<h1 class="text-2xl">Entropy is everywhere</h1>
 </div>
 
 <!--
 The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
 -->
-
----
-transition: fade-out
----
-Hey
-<ClassDiagram
-  title="Person"
-  :private-fields="['age: number', 'name: string']"
-  :public-fields="['id: string']"
-  :private-methods="['calculateAge']"
-  :public-methods="['getName', 'setName']"
-/>
 
 ---
 transition: fade-out
@@ -156,12 +186,18 @@ image: https://cover.sli.dev
 
 Use code snippets and get the highlighting directly, and even types hover!
 
-<FlyingDots />
+```ts {all|5|7|7-8|10|all} twoslash
+// TwoSlash enables TypeScript hover information
+// and errors in markdown code blocks
+// More at https://shiki.style/packages/twoslash
 
+import { computed, ref } from 'vue'
 
+const count = ref(0)
+const doubled = computed(() => count.value * 2)
 
-
-
+doubled.value = 2
+```
 
 <arrow v-click="[4, 5]" x1="350" y1="310" x2="195" y2="334" color="#953" width="2" arrowSize="1" />
 
@@ -562,7 +598,7 @@ Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML D
 ---
 foo: bar
 dragPos:
-  square: 679,46,167,_,-16
+  square: 691,32,167,_,-16
 ---
 
 # Draggable Elements
@@ -602,7 +638,7 @@ Double-click on the draggable elements to edit their positions.
 <v-drag-arrow two-way />
 ```
 
-<v-drag-arrow pos="494,498,-174,0" two-way op70 />
+<v-drag-arrow pos="67,452,253,46" two-way op70 />
 
 ---
 src: ./pages/imported-slides.md
@@ -645,114 +681,3 @@ class: text-center
 [Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
 
 <PoweredBySlidev mt-10 />
-
-<template>
-  <div class="class-diagram">
-    <div class="class-title">{{ title }}</div>
-    <div class="class-members">
-      <!-- Fields -->
-      <div class="fields-section">
-        <div v-for="(field, index) in privateFields" :key="'priv-field-' + index" class="member private">
-          <span class="visibility">-</span> {{ field }}
-        </div>
-        <div v-for="(field, index) in publicFields" :key="'pub-field-' + index" class="member public">
-          <span class="visibility">+</span> {{ field }}
-        </div>
-      </div>
-      <!-- Methods -->
-      <div class="methods-section">
-        <div v-for="(method, index) in privateMethods" :key="'priv-method-' + index" class="member private">
-          <span class="visibility">-</span> {{ method }}()
-        </div>
-        <div v-for="(method, index) in publicMethods" :key="'pub-method-' + index" class="member public">
-          <span class="visibility">+</span> {{ method }}()
-        </div>
-      </div>
-    </div>
-  </div>
-</template>
-
-<script>
-export default {
-  name: 'ClassDiagram',
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    privateFields: {
-      type: Array,
-      default: () => []
-    },
-    publicFields: {
-      type: Array,
-      default: () => []
-    },
-    privateMethods: {
-      type: Array,
-      default: () => []
-    },
-    publicMethods: {
-      type: Array,
-      default: () => []
-    }
-  }
-}
-</script>
-
-<style scoped>
-.class-diagram {
-  border: 2px solid #333;
-  border-radius: 4px;
-  display: inline-block;
-  min-width: 200px;
-  background: white;
-  margin: 20px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-.class-title {
-  padding: 12px;
-  text-align: center;
-  font-weight: bold;
-  border-bottom: 2px solid #333;
-  background: #2B90B6;
-  color: white;
-  font-size: 1.2em;
-  letter-spacing: 0.5px;
-}
-
-.class-members {
-  padding: 12px;
-}
-
-.fields-section {
-  border-bottom: 1px solid #ddd;
-  padding-bottom: 8px;
-  margin-bottom: 8px;
-}
-
-.member {
-  padding: 4px 8px;
-  font-family: 'Courier New', monospace;
-  font-size: 0.9em;
-}
-
-.visibility {
-  display: inline-block;
-  width: 15px;
-  font-weight: bold;
-}
-
-.private {
-  color: #d63031;
-}
-
-.public {
-  color: #00b894;
-}
-
-.methods-section {
-  padding-top: 8px;
-}
-</style>
